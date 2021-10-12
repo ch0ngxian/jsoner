@@ -1,10 +1,11 @@
 <template>
-  <div class="h-screen w-screen flex justify-center">
-    <div class="w-full">
-      <textarea class="" v-model="input"></textarea>
-    </div>
-
-    <div class="w-full">Result</div>
+  <div class="h-screen w-screen flex justify-center text-sm">
+    <textarea
+      class="w-full h-screen p-7 resize-none"
+      v-model="input"
+    ></textarea>
+    <div class="border h-screen"></div>
+    <pre class="w-full h-screen p-7">{{ result }}</pre>
   </div>
 </template>
 
@@ -14,9 +15,13 @@ import { defineComponent } from "@nuxtjs/composition-api";
 export default defineComponent({
   data() {
     return {
-      input: "{}",
+      input: '{"a":"a"}',
     };
   },
-  methods: {},
+  computed: {
+    result() {
+      return JSON.stringify(JSON.parse(this.input as string), null, 4);
+    },
+  },
 });
 </script>
