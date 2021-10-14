@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent } from "@nuxtjs/composition-api";
-import VNode from "./VNode.vue";
+import VNode from "./nodes/VNode.vue";
 
 export default defineComponent({
   components: {

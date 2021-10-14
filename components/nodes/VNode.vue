@@ -35,19 +35,8 @@
 <script lang="ts">
 import { defineComponent } from "@nuxtjs/composition-api";
 
-import VObject from "./VObject.vue";
-import VArray from "./VArray.vue";
-import VString from "./VString.vue";
-import VNumber from "./VNumber.vue";
-
 export default defineComponent({
   name: "VNode",
-  components: {
-    VArray,
-    VObject,
-    VString,
-    VNumber,
-  },
   props: {
     field: {
       type: [String, Number],

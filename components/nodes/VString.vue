@@ -17,7 +17,6 @@ export default defineComponent({
   props: {
     field: {
       type: [String],
-      required: false,
     },
     value: {
       type: [String],

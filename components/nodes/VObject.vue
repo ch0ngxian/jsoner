@@ -28,7 +28,6 @@ export default defineComponent({
   props: {
     field: {
       type: [String],
-      required: true,
     },
     object: {
       type: [Object],
