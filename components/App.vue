@@ -5,23 +5,50 @@
       v-model="input"
     ></textarea>
     <div class="border h-screen"></div>
-    <pre class="w-full h-screen p-7">{{ result }}</pre>
+    <div v-if="isValidJson" class="w-full h-screen p-7">
+      {
+      <div class="pl-5" v-for="(node, field, index) in nodes" :key="index">
+        <v-node :field="field" :node="node"></v-node>
+      </div>
+      }
+    </div>
+    <pre v-else class="w-full h-screen p-7">{{ input }}</pre>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "@nuxtjs/composition-api";
+import VNode from "./VNode.vue";
 
 export default defineComponent({
+  components: {
+    VNode,
+  },
   data() {
     return {
-      input: '{"a":"a"}',
+      input: '{"str":"a", "obj":{"a": "1"}, "arr":[1,2,4]}',
+      nodes: {},
     };
   },
   computed: {
-    result() {
-      return JSON.stringify(JSON.parse(this.input as string), null, 4);
+    isValidJson() {
+      try {
+        JSON.parse(this.input as string);
+        return true;
+      } catch {}
+
+      return false;
     },
+  },
+  watch: {
+    input(data: string) {
+      try {
+        this.nodes = JSON.parse(data);
+      } catch {}
+    },
+  },
+  created() {
+    this.nodes = JSON.parse(this.input);
   },
 });
 </script>
