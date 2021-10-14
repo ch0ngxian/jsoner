@@ -1,16 +1,32 @@
 <template>
   <div class="flex">
     <div v-if="node.constructor === Object">
-      <v-object :field="field" :object="node"></v-object>
+      <v-object
+        :field="field"
+        :object="node"
+        :showEndComma="showEndComma"
+      ></v-object>
     </div>
     <div v-else-if="node.constructor === Array">
-      <v-array :field="field" :array="node"></v-array>
+      <v-array
+        :field="field"
+        :array="node"
+        :showEndComma="showEndComma"
+      ></v-array>
     </div>
     <div v-else-if="node.constructor === String">
-      <v-string :field="field" :value="node"></v-string>
+      <v-string
+        :field="field"
+        :value="node"
+        :showEndComma="showEndComma"
+      ></v-string>
     </div>
     <div v-else-if="node.constructor === Number">
-      <v-number :field="field" :value="node"></v-number>
+      <v-number
+        :field="field"
+        :value="node"
+        :showEndComma="showEndComma"
+      ></v-number>
     </div>
   </div>
 </template>
@@ -40,6 +56,10 @@ export default defineComponent({
     node: {
       type: [Object, Array, Number, String],
       required: true,
+    },
+    showEndComma: {
+      type: [Boolean],
+      default: true,
     },
   },
 });

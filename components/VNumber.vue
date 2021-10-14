@@ -2,10 +2,9 @@
   <div class="flex">
     <template v-if="field">
       "{{ field }}"
-      <p class="px-1">:</p>
+      <p class="pr-1">:</p>
     </template>
-    <p>{{ value }}</p>
-    ,
+    <p>{{ value }}<span v-if="showEndComma">,</span></p>
   </div>
 </template>
 
@@ -23,6 +22,10 @@ export default defineComponent({
     value: {
       type: [Number],
       required: true,
+    },
+    showEndComma: {
+      type: [Boolean],
+      default: true,
     },
   },
 });

@@ -3,14 +3,19 @@
     <div class="flex">
       <template v-if="field">
         "{{ field }}"
-        <p class="px-1">:</p>
+        <p class="pr-1">:</p>
       </template>
       {
     </div>
-    <div v-for="(node, field, index) in object" :key="index">
-      <v-node class="pl-5" :field="field" :node="node"></v-node>
+    <div class="flex" v-for="(node, field, index) in object" :key="index">
+      <v-node
+        class="pl-5"
+        :showEndComma="index + 1 != Object.keys(object).length"
+        :field="field"
+        :node="node"
+      ></v-node>
     </div>
-    }
+    }<span v-if="showEndComma">,</span>
   </div>
 </template>
 
@@ -28,6 +33,10 @@ export default defineComponent({
     object: {
       type: [Object],
       required: true,
+    },
+    showEndComma: {
+      type: [Boolean],
+      default: true,
     },
   },
 });

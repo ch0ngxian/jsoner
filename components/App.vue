@@ -6,11 +6,7 @@
     ></textarea>
     <div class="border h-screen"></div>
     <div v-if="isValidJson" class="w-full h-screen p-7">
-      {
-      <div class="pl-5" v-for="(node, field, index) in nodes" :key="index">
-        <v-node :field="field" :node="node"></v-node>
-      </div>
-      }
+      <v-node :node="nodes" :showEndComma="false"></v-node>
     </div>
     <pre v-else class="w-full h-screen p-7">{{ input }}</pre>
   </div>
