@@ -4,7 +4,8 @@
       <field :field="field"></field>
       <p class="pr-1">:</p>
     </template>
-    <p>{{ value }}<span v-if="showEndComma">,</span></p>
+    <p style="color: #afcfa4">{{ value }}</p>
+    <span v-if="showEndComma">,</span>
   </div>
 </template>
 

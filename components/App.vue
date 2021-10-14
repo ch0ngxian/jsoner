@@ -4,7 +4,7 @@
     style="background-color: #1e1e1e; color: #d4d4d4"
   >
     <textarea
-      class="w-full h-screen p-7 resize-non"
+      class="w-full h-screen p-7 resize-non focus:outline-none"
       style="background-color: #1e1e1e"
       v-model="input"
     ></textarea>
