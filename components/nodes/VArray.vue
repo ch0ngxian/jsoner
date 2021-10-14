@@ -2,7 +2,7 @@
   <div>
     <div class="flex">
       <template v-if="field">
-        "{{ field }}"
+        <field :field="field"></field>
         <p class="pr-1">:</p>
       </template>
       [

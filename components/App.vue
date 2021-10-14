@@ -1,10 +1,14 @@
 <template>
-  <div class="h-screen w-screen flex justify-center text-sm">
+  <div
+    class="h-screen w-screen flex justify-center text-sm"
+    style="background-color: #1e1e1e; color: #d4d4d4"
+  >
     <textarea
-      class="w-full h-screen p-7 resize-none"
+      class="w-full h-screen p-7 resize-non"
+      style="background-color: #1e1e1e"
       v-model="input"
     ></textarea>
-    <div class="border h-screen"></div>
+    <div class="border h-screen" style="border-color: #444444"></div>
     <div v-if="isValidJson" class="w-full h-screen p-7">
       <v-node :node="nodes" :showEndComma="false"></v-node>
     </div>

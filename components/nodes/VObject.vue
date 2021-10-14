@@ -2,7 +2,7 @@
   <div>
     <div class="flex">
       <template v-if="field">
-        "{{ field }}"
+        <field :field="field"></field>
         <p class="pr-1">:</p>
       </template>
       {
@@ -22,8 +22,10 @@
 
 <script lang="ts">
 import { defineComponent } from "@nuxtjs/composition-api";
+import Field from "./Field.vue";
 
 export default defineComponent({
+  components: { Field },
   name: "VObject",
   props: {
     field: {

@@ -11,8 +11,9 @@ import VObject from "../components/nodes/VObject.vue";
 import VArray from "../components/nodes/VArray.vue";
 import VString from "../components/nodes/VString.vue";
 import VNumber from "../components/nodes/VNumber.vue";
+import Field from "../components/nodes/Field.vue";
 
-const components = { VNode, VObject, VArray, VString, VNumber };
+const components = { VNode, VObject, VArray, VString, VNumber, Field };
 
 Object.entries(components).forEach(([name, component]) => {
   Vue.component(name, component);

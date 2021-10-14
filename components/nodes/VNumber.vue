@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <template v-if="field">
-      "{{ field }}"
+      <field :field="field"></field>
       <p class="pr-1">:</p>
     </template>
     <p>{{ value }}<span v-if="showEndComma">,</span></p>
