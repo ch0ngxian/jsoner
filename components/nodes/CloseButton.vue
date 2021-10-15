@@ -6,8 +6,8 @@
       rounded
       border border-gray-600
       text-gray-600
-      h-3
-      w-3
+      h-4
+      w-4
       items-center
       justify-center
       text-xs

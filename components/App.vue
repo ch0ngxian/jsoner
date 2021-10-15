@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-screen w-screen flex justify-center text-xs"
+    class="h-screen w-screen flex justify-center text-sm"
     style="color: #d4d4d4"
   >
     <textarea
