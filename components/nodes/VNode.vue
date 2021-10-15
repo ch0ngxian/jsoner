@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div v-if="node" class="flex">
     <div v-if="node.constructor === Object">
       <v-object
         :field="field"

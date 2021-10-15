@@ -1,16 +1,16 @@
 <template>
   <div
     class="h-screen w-screen flex justify-center text-sm"
-    style="background-color: #1e1e1e; color: #d4d4d4"
+    style="color: #d4d4d4"
   >
     <textarea
-      class="w-full h-screen p-7 resize-non focus:outline-none"
+      class="w-full h-screen p-7 resize-none focus:outline-none"
       style="background-color: #1e1e1e"
       v-model="input"
     ></textarea>
     <div class="border h-screen" style="border-color: #444444"></div>
     <div v-if="isValidJson" class="w-full h-screen p-7">
-      <v-node :node="nodes" :showEndComma="false"></v-node>
+      <v-node :node="node" :showEndComma="false"></v-node>
     </div>
     <pre v-else class="w-full h-screen p-7">{{ input }}</pre>
   </div>
@@ -27,7 +27,7 @@ export default defineComponent({
   data() {
     return {
       input: '{"str":"a", "obj":{"a": "1"}, "arr":[1,2,4]}',
-      nodes: {},
+      node: {},
     };
   },
   computed: {
@@ -43,12 +43,12 @@ export default defineComponent({
   watch: {
     input(data: string) {
       try {
-        this.nodes = JSON.parse(data);
+        this.node = JSON.parse(data);
       } catch {}
     },
   },
   created() {
-    this.nodes = JSON.parse(this.input);
+    this.node = JSON.parse(this.input);
   },
 });
 </script>

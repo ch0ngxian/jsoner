@@ -21,3 +21,12 @@ Object.entries(components).forEach(([name, component]) => {
 
 export default Vue.extend({});
 </script>
+
+<style>
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1e1e1e;
+}
+</style>
