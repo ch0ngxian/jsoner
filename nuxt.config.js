@@ -7,7 +7,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'json-parser',
+    title: 'JSONer | A minimalist JSON beautifier',
     htmlAttrs: {
       lang: 'en'
     },
