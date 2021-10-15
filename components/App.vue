@@ -1,15 +1,22 @@
 <template>
   <div
-    class="h-screen w-screen flex justify-center text-sm"
+    class="h-screen w-screen flex justify-center text-xs"
     style="color: #d4d4d4"
   >
     <textarea
-      class="w-full h-screen p-7 resize-none focus:outline-none"
+      class="
+        w-full
+        h-screen
+        p-7
+        resize-none
+        focus:outline-none
+        overflow-y-scroll
+      "
       style="background-color: #1e1e1e"
       v-model="input"
     ></textarea>
     <div class="border h-screen" style="border-color: #444444"></div>
-    <div v-if="isValidJson" class="w-full h-screen p-7">
+    <div v-if="isValidJson" class="w-full h-screen p-7 overflow-y-scroll">
       <v-node :node="node" :showEndComma="false"></v-node>
     </div>
     <pre v-else class="w-full h-screen p-7">{{ input }}</pre>
