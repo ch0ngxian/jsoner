@@ -61,11 +61,6 @@ import Field from "./Field.vue";
 export default defineComponent({
   components: { Field },
   name: "VObject",
-  data() {
-    return {
-      isOpen: false,
-    };
-  },
   props: {
     field: {
       type: [String],
@@ -78,6 +73,11 @@ export default defineComponent({
       type: [Boolean],
       default: true,
     },
+  },
+  data() {
+    return {
+      isOpen: true,
+    };
   },
   methods: {
     open() {
