@@ -7,9 +7,7 @@
           <p class="pr-1">:</p>
         </template>
         {
-        <button class="mx-1 px-1 hover:bg-gray-700 rounded" @click="open">
-          ...
-        </button>
+        <open-button @click.native="open" />
         }
         <span v-if="showEndComma">,</span>
       </div>
@@ -21,24 +19,7 @@
           <p class="pr-1">:</p>
         </template>
         {
-        <button
-          v-if="isOpen"
-          class="
-            ml-2
-            flex
-            rounded
-            border border-gray-500
-            text-gray-500
-            h-3
-            w-3
-            items-center
-            justify-center
-            text-xs
-          "
-          @click="close"
-        >
-          <span>-</span>
-        </button>
+        <close-button v-if="isOpen" @click.native="close" />
       </div>
       <div class="flex" v-for="(node, field, index) in object" :key="index">
         <v-node
@@ -56,10 +37,11 @@
 
 <script lang="ts">
 import { defineComponent } from "@nuxtjs/composition-api";
+import CloseButton from "./CloseButton.vue";
 import Field from "./Field.vue";
 
 export default defineComponent({
-  components: { Field },
+  components: { Field, CloseButton },
   name: "VObject",
   props: {
     field: {

@@ -12,8 +12,19 @@ import VArray from "../components/nodes/VArray.vue";
 import VString from "../components/nodes/VString.vue";
 import VNumber from "../components/nodes/VNumber.vue";
 import Field from "../components/nodes/Field.vue";
+import OpenButton from "../components/nodes/OpenButton.vue";
+import CloseButton from "../components/nodes/CloseButton.vue";
 
-const components = { VNode, VObject, VArray, VString, VNumber, Field };
+const components = {
+  VNode,
+  VObject,
+  VArray,
+  VString,
+  VNumber,
+  Field,
+  OpenButton,
+  CloseButton,
+};
 
 Object.entries(components).forEach(([name, component]) => {
   Vue.component(name, component);
