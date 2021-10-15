@@ -11,6 +11,9 @@
       items-center
       justify-center
       text-xs
+      hover:bg-gray-700
+      hover:border-gray-400
+      hover:text-gray-400
     "
   >
     <span>-</span>
