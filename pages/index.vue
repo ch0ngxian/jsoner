@@ -11,6 +11,8 @@ import VObject from "../components/nodes/VObject.vue";
 import VArray from "../components/nodes/VArray.vue";
 import VString from "../components/nodes/VString.vue";
 import VNumber from "../components/nodes/VNumber.vue";
+import VNull from "../components/nodes/VNull.vue";
+import VBoolean from "../components/nodes/VBoolean.vue";
 import Field from "../components/nodes/Field.vue";
 import OpenButton from "../components/nodes/OpenButton.vue";
 import CloseButton from "../components/nodes/CloseButton.vue";
@@ -21,6 +23,8 @@ const components = {
   VArray,
   VString,
   VNumber,
+  VNull,
+  VBoolean,
   Field,
   OpenButton,
   CloseButton,

@@ -1,6 +1,14 @@
 <template>
-  <div v-if="node" class="flex py-0.5">
-    <div v-if="node.constructor === Object">
+  <div class="flex py-0.5">
+    <!-- <div v-if="node != null">{{ node.constructor }}</div> -->
+    <div v-if="node == null">
+      <v-null
+        :field="field"
+        :value="node"
+        :showEndComma="showEndComma"
+      ></v-null>
+    </div>
+    <div v-else-if="node.constructor === Object">
       <v-object
         :field="field"
         :object="node"
@@ -27,6 +35,13 @@
         :value="node"
         :showEndComma="showEndComma"
       ></v-number>
+    </div>
+    <div v-else-if="node.constructor === Boolean">
+      <v-boolean
+        :field="field"
+        :value="node"
+        :showEndComma="showEndComma"
+      ></v-boolean>
     </div>
   </div>
 </template>

@@ -7,7 +7,11 @@
           <p class="pr-1">:</p>
         </template>
         [
-        <open-button @click.native="open" />
+        <open-button
+          v-if="array.length > 0"
+          @click.native="open"
+          :count="array.length"
+        />
         ]
         <span v-if="showEndComma">,</span>
       </div>
@@ -68,6 +72,9 @@ export default defineComponent({
       this.isOpen = false;
       console.log("close");
     },
+  },
+  created() {
+    this.isOpen = this.array.length > 0;
   },
 });
 </script>

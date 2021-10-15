@@ -7,7 +7,10 @@
           <p class="pr-1">:</p>
         </template>
         {
-        <open-button @click.native="open" />
+        <open-button
+          v-if="Object.keys(this.object).length > 0"
+          @click.native="open"
+        />
         }
         <span v-if="showEndComma">,</span>
       </div>
@@ -45,14 +48,14 @@ export default defineComponent({
   name: "VObject",
   props: {
     field: {
-      type: [String],
+      type: String,
     },
     object: {
-      type: [Object],
+      type: Object,
       required: true,
     },
     showEndComma: {
-      type: [Boolean],
+      type: Boolean,
       default: true,
     },
   },
@@ -70,6 +73,9 @@ export default defineComponent({
       this.isOpen = false;
       console.log("close");
     },
+  },
+  created() {
+    this.isOpen = Object.keys(this.object).length > 0;
   },
 });
 </script>

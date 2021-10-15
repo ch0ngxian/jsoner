@@ -33,7 +33,8 @@ export default defineComponent({
   },
   data() {
     return {
-      input: '{"str":"a", "obj":{"a": "1"}, "arr":[1,2,4]}',
+      input:
+        '{"str":"a", "obj":{"a": "1"}, "arr":[1,2,4], "bool": true, "empty": null}',
       node: {},
     };
   },
