@@ -12,14 +12,17 @@
         focus:outline-none
         overflow-y-scroll
       "
-      style="background-color: #1e1e1e"
+      style="background-color: #1e1e1e; min-width: 40vw; max-width: 60vw"
       v-model="input"
     ></textarea>
     <div class="border h-screen" style="border-color: #444444"></div>
-    <div v-if="isValidJson" class="w-full h-screen p-7 overflow-y-scroll">
-      <v-node :node="node" :showEndComma="false"></v-node>
+    <div class="w-full h-screen p-7 overflow-y-scroll flex-grow break-words">
+      <v-node v-if="isValidJson" :node="node" :showEndComma="false"></v-node>
+      <p v-else>
+        {{ input }}
+      </p>
     </div>
-    <pre v-else class="w-full h-screen p-7">{{ input }}</pre>
+
     <coffee class="fixed bottom-0 right-0" />
   </div>
 </template>
