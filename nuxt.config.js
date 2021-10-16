@@ -14,8 +14,15 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-      { name: 'format-detection', content: 'telephone=no' }
+      { hid: 'description', name: 'description', content: 'JSONer helps to format the input JSON and beautify it to display in a more readable way.' },
+      { name: 'format-detection', content: 'telephone=no' },
+      {
+        hid: "og:image",
+        property: "og:image",
+        content: "seo_image.png",
+      },
+      { property: "og:image:width", content: "1024" },
+      { property: "og:image:height", content: "512" },
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }

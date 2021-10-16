@@ -58,8 +58,7 @@ export default defineComponent({
       required: false,
     },
     node: {
-      type: [Object, Array, Number, String],
-      required: true,
+      type: [Object, Array, Number, String, Boolean],
     },
     showEndComma: {
       type: [Boolean],
