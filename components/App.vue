@@ -20,16 +20,19 @@
       <v-node :node="node" :showEndComma="false"></v-node>
     </div>
     <pre v-else class="w-full h-screen p-7">{{ input }}</pre>
+    <coffee class="fixed bottom-0 right-0" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "@nuxtjs/composition-api";
+import Coffee from "./Coffee.vue";
 import VNode from "./nodes/VNode.vue";
 
 export default defineComponent({
   components: {
     VNode,
+    Coffee,
   },
   data() {
     return {

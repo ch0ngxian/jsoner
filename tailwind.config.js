@@ -5,7 +5,11 @@ module.exports = {
     fontFamily: {
       mono: ['Menlo', 'Monaco', 'Courier New', 'monospace']
     },
-    extend: {},
+    extend: {
+      transitionProperty: {
+        'width': 'width'
+      }
+    },
   },
   variants: {
     extend: {},
