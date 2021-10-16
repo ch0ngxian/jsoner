@@ -22,22 +22,22 @@ export default {
       },
       {
         hid: 'og:type',
-        name: 'og:type',
+        property: 'og:type',
         content: 'website'
       },
       {
         hid: 'og:title',
-        name: 'og:title',
+        property: 'og:title',
         content: 'JSONer | A minimalist JSON beautifier'
       },
       {
         hid: 'og:description',
-        name: 'og:description',
+        property: 'og:description',
         content: 'JSONer helps to format the input JSON and beautify it to display in a more readable way.'
       },
       {
         hid: 'og:url',
-        name: 'og:url',
+        property: 'og:url',
         content: 'https://www.jsoner.app/'
       },
       {
