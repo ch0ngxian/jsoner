@@ -14,8 +14,32 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'JSONer helps to format the input JSON and beautify it to display in a more readable way.' },
       { name: 'format-detection', content: 'telephone=no' },
+      {
+        hid: 'description',
+        name: 'description',
+        content: 'JSONer helps to format the input JSON and beautify it to display in a more readable way.'
+      },
+      {
+        hid: 'og:type',
+        name: 'og:type',
+        content: 'website'
+      },
+      {
+        hid: 'og:title',
+        name: 'og:title',
+        content: 'JSONer | A minimalist JSON beautifier'
+      },
+      {
+        hid: 'og:description',
+        name: 'og:description',
+        content: 'JSONer helps to format the input JSON and beautify it to display in a more readable way.'
+      },
+      {
+        hid: 'og:url',
+        name: 'og:url',
+        content: 'https://www.jsoner.app/'
+      },
       {
         hid: "og:image",
         property: "og:image",
