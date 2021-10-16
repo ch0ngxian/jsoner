@@ -13,12 +13,22 @@
       v-model="input"
     ></textarea>
     <div
-      class="divider"
+      class="divider-outside flex justify-center"
       :style="{
         left: `${dividerPosition}%`,
       }"
       @mousedown="startDragging"
-    ></div>
+      @mouseenter="isDividerHover = true"
+      @mouseleave="isDividerHover = false"
+    >
+      <div
+        class="divider-inside"
+        :style="{
+          'background-color': isDividerHover ? 'transparent' : '#444444',
+        }"
+      ></div>
+    </div>
+
     <div
       class="w-full h-screen p-7 overflow-y-scroll flex-grow break-words"
       :style="{
@@ -51,6 +61,7 @@ export default defineComponent({
         '{"str":"a", "obj":{"a": "1"}, "arr":[1,2,4], "bool": true, "empty": null}',
       node: {},
       dividerPosition: 50,
+      isDividerHover: false,
     };
   },
   computed: {
@@ -93,9 +104,13 @@ export default defineComponent({
 </script>
 
 <style>
-.divider {
-  background-color: #444444;
+.divider-outside {
+  background-color: transparent;
   cursor: ew-resize;
-  @apply w-0.5 h-screen absolute hover:bg-blue-600;
+  @apply w-2 h-screen absolute transition-bg hover:bg-blue-600;
+}
+
+.divider-inside {
+  @apply w-0.5 h-screen;
 }
 </style>

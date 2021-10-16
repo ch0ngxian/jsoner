@@ -7,7 +7,7 @@ module.exports = {
     },
     extend: {
       transitionProperty: {
-        'width': 'width'
+        'bg': 'background-color'
       }
     },
   },
