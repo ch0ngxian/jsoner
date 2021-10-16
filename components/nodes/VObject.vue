@@ -67,11 +67,9 @@ export default defineComponent({
   methods: {
     open() {
       this.isOpen = true;
-      console.log("open");
     },
     close() {
       this.isOpen = false;
-      console.log("close");
     },
   },
   created() {
