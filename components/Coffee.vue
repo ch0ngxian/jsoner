@@ -19,8 +19,8 @@
       :class="{ 'w-52': isShow }"
     >
       <p v-if="isShow" class="mr-5">Buy me a coffee?</p>
-      <img v-if="isShow" class="h-7 w-7" src="../static/coffee_hover.png" />
-      <img v-else class="h-7 w-7" src="../static/coffee.png" />
+      <img v-if="isShow" class="h-7 w-7" src="../assets/coffee_hover.png" />
+      <img v-else class="h-7 w-7" src="../assets/coffee.png" />
     </div>
   </button>
 </template>
