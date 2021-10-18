@@ -1,4 +1,10 @@
-# jsoner
+# JSONer
+JSONer is a minimalist JSON beautifier. It helps to format the input JSON and beautify it to display in a more readable way.\
+Try it now at https://jsoner.app/
+
+## Preview
+
+<img width="1437" alt="JSONer Preview" src="https://user-images.githubusercontent.com/40559684/137627912-f2cdbe4f-5c18-4856-b4ef-652ec763c417.png">
 
 ## Build Setup
 
