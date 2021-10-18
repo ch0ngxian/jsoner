@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="!isOpen">
+    <div :class="{ hidden: isOpen }">
       <div class="flex">
         <template v-if="field">
           <field :field="field"></field>
@@ -15,8 +15,8 @@
         ]
         <span v-if="showEndComma">,</span>
       </div>
-    </template>
-    <template v-else>
+    </div>
+    <div :class="{ hidden: !isOpen }">
       <div class="flex items-center">
         <template v-if="field">
           <field :field="field"></field>
@@ -33,7 +33,7 @@
         ></v-node>
       </div>
       ]<span v-if="showEndComma">,</span>
-    </template>
+    </div>
   </div>
 </template>
 
