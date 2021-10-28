@@ -1,7 +1,7 @@
 <template>
   <div
-    class="h-screen w-screen flex justify-center text-sm"
-    style="color: #d4d4d4"
+    class="h-screen w-screen flex justify-center"
+    style="color: #d4d4d4; font-size: 0.75rem; font-weight: 300"
     @mouseup="endDragging"
   >
     <textarea
