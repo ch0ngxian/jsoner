@@ -1,5 +1,5 @@
-<template>
-  <div>
+<template         style="width: 100%">
+  <div class="w-full">
     <div :class="{ hidden: isOpen }">
       <div class="flex">
         <template v-if="field">
@@ -15,7 +15,7 @@
         <span v-if="showEndComma">,</span>
       </div>
     </div>
-    <div :class="{ hidden: !isOpen }">
+    <div :class="{ hidden: !isOpen, 'w-full': true }">
       <div class="flex items-center">
         <template v-if="field">
           <field :field="field"></field>
@@ -24,9 +24,13 @@
         {
         <close-button v-if="isOpen" @click.native="close" />
       </div>
-      <div class="flex" v-for="(node, field, index) in object" :key="index">
+      <div
+        class="flex w-full"
+        v-for="(node, field, index) in object"
+        :key="index"
+      >
         <v-node
-          class="pl-5"
+          class="ml-8 w-full"
           :showEndComma="index + 1 != Object.keys(object).length"
           :field="field"
           :node="node"

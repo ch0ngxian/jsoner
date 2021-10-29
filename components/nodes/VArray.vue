@@ -27,7 +27,7 @@
       </div>
       <div class="flex" v-for="(node, index) in array" :key="index">
         <v-node
-          class="pl-5"
+          class="ml-8"
           :showEndComma="index + 1 != array.length"
           :node="node"
         ></v-node>
