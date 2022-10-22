@@ -5,7 +5,7 @@
     @mouseup="endDragging"
   >
     <textarea
-      class="h-1/2 sm:h-screen p-7 resize-none focus:outline-none overflow-y-scroll"
+      class="h-2/5 sm:h-screen p-7 resize-none focus:outline-none overflow-y-scroll"
       :style="{
         'background-color': '#1e1e1e',
         width: screen.width > 640 ? `${dividerPosition}%` : '100%'
@@ -103,18 +103,12 @@ export default defineComponent({
     onResize() {
       this.screen.height = window.innerHeight;
       this.screen.width = window.innerWidth;
-
-      if (this.screen.width < 640) {
-        this.dividerPosition = 0;
-      }
     }
   },
   created() {
     this.node = JSON.parse(this.input);
   },
   mounted() {
-    this.onResize();
-
     this.$nextTick(() => {
       window.addEventListener("resize", this.onResize);
     });
@@ -129,7 +123,7 @@ export default defineComponent({
 .divider-outside {
   background-color: transparent;
   cursor: ew-resize;
-  @apply w-screen sm:w-2 h-2 sm:h-screen absolute transition-bg hover:bg-blue-600;
+  @apply w-screen sm:w-2 h-2 sm:h-screen sm:absolute transition-bg hover:bg-blue-600;
 }
 
 .divider-inside {
