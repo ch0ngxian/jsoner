@@ -5,7 +5,7 @@
     @mouseup="endDragging"
   >
     <textarea
-      class="h-screen p-7 resize-none focus:outline-none overflow-y-scroll"
+      class="h-1/2 sm:h-screen p-7 resize-none focus:outline-none overflow-y-scroll"
       :style="{
         'background-color': '#1e1e1e',
         width: screen.width > 640 ? `${dividerPosition}%` : '100%'
@@ -30,7 +30,7 @@
     </div>
 
     <div
-      class="w-full h-screen p-7 overflow-y-scroll flex-grow break-words"
+      class="w-full sm:h-screen p-7 overflow-y-scroll flex-grow break-words"
       :style="{
         width: screen.width > 640 ? `${100 - dividerPosition}%` : '100%'
       }"
