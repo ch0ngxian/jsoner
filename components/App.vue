@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-screen w-screen flex justify-center"
+    class="h-screen w-screen flex justify-center flex-col sm:flex-row"
     style="color: #d4d4d4; font-size: 0.75rem; font-weight: 300"
     @mouseup="endDragging"
   >
@@ -8,14 +8,14 @@
       class="h-screen p-7 resize-none focus:outline-none overflow-y-scroll"
       :style="{
         'background-color': '#1e1e1e',
-        width: `${dividerPosition}%`,
+        width: screen.width > 640 ? `${dividerPosition}%` : '100%'
       }"
       v-model="input"
     ></textarea>
     <div
       class="divider-outside flex justify-center"
       :style="{
-        left: `${dividerPosition}%`,
+        left: `${dividerPosition}%`
       }"
       @mousedown="startDragging"
       @mouseenter="isDividerHover = true"
@@ -24,7 +24,7 @@
       <div
         class="divider-inside"
         :style="{
-          'background-color': isDividerHover ? 'transparent' : '#444444',
+          'background-color': isDividerHover ? 'transparent' : '#444444'
         }"
       ></div>
     </div>
@@ -32,7 +32,7 @@
     <div
       class="w-full h-screen p-7 overflow-y-scroll flex-grow break-words"
       :style="{
-        width: `${100 - dividerPosition}%`,
+        width: screen.width > 640 ? `${100 - dividerPosition}%` : '100%'
       }"
     >
       <v-node v-if="isValidJson" :node="node" :showEndComma="false"></v-node>
@@ -53,15 +53,19 @@ import VNode from "./nodes/VNode.vue";
 export default defineComponent({
   components: {
     VNode,
-    Coffee,
+    Coffee
   },
   data() {
     return {
       input:
         '{"str":"a", "obj":{"a": "1"}, "arr":[1,2,4], "bool": true, "empty": null}',
+      screen: {
+        width: 0,
+        height: 0
+      },
       node: {},
       dividerPosition: 50,
-      isDividerHover: false,
+      isDividerHover: false
     };
   },
   computed: {
@@ -72,14 +76,14 @@ export default defineComponent({
       } catch {}
 
       return false;
-    },
+    }
   },
   watch: {
     input(data: string) {
       try {
         this.node = JSON.parse(data);
       } catch {}
-    },
+    }
   },
   methods: {
     handleDragging(event: Event) {
@@ -96,10 +100,28 @@ export default defineComponent({
     endDragging() {
       document.removeEventListener("mousemove", this.handleDragging);
     },
+    onResize() {
+      this.screen.height = window.innerHeight;
+      this.screen.width = window.innerWidth;
+
+      if (this.screen.width < 640) {
+        this.dividerPosition = 0;
+      }
+    }
   },
   created() {
     this.node = JSON.parse(this.input);
   },
+  mounted() {
+    this.onResize();
+
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.onResize);
+  }
 });
 </script>
 
@@ -107,10 +129,10 @@ export default defineComponent({
 .divider-outside {
   background-color: transparent;
   cursor: ew-resize;
-  @apply w-2 h-screen absolute transition-bg hover:bg-blue-600;
+  @apply w-screen sm:w-2 h-2 sm:h-screen absolute transition-bg hover:bg-blue-600;
 }
 
 .divider-inside {
-  @apply w-0.5 h-screen;
+  @apply w-screen sm:w-0.5 h-0.5 sm:h-screen;
 }
 </style>
