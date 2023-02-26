@@ -3,11 +3,11 @@ export default {
   ssr: false,
 
   router: {
-    extendRoutes(routes, resolve) {
+    extendRoutes (routes, resolve) {
       routes.push({
         name: 'redirect',
         path: '*',
-        redirect: "/"
+        redirect: '/'
       })
     }
   },
@@ -51,12 +51,12 @@ export default {
         content: 'https://www.jsoner.app/'
       },
       {
-        hid: "og:image",
-        property: "og:image",
-        content: "seo_image.png",
+        hid: 'og:image',
+        property: 'og:image',
+        content: 'seo_image.png'
       },
-      { property: "og:image:width", content: "1024" },
-      { property: "og:image:height", content: "512" },
+      { property: 'og:image:width', content: '1024' },
+      { property: 'og:image:height', content: '512' }
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
@@ -68,8 +68,7 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-  ],
+  plugins: ['@/plugins/gtag'],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -80,7 +79,7 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/composition-api/module',
+    '@nuxtjs/composition-api/module'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
