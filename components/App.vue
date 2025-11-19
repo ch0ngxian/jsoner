@@ -35,7 +35,8 @@
         width: screen.width > 640 ? `${100 - dividerPosition}%` : '100%'
       }"
     >
-      <v-node :node="node" :showEndComma="false"></v-node>
+      <error-display :errors="parseResult.errors" :fixesApplied="parseResult.fixesApplied"></error-display>
+      <v-node :node="parseResult.data" :showEndComma="false"></v-node>
     </div>
 
     <coffee class="fixed bottom-0 right-0" />
@@ -46,12 +47,14 @@
 import { defineComponent } from "@nuxtjs/composition-api";
 import Coffee from "./Coffee.vue";
 import VNode from "./nodes/VNode.vue";
-import { parsePartialJson, isValidJson as checkValidJson } from "~/utils/partialJsonParser";
+import ErrorDisplay from "./ErrorDisplay.vue";
+import { parsePartialJson, type ParseResult } from "~/utils/partialJsonParser";
 
 export default defineComponent({
   components: {
     VNode,
-    Coffee
+    Coffee,
+    ErrorDisplay
   },
   data() {
     return {
@@ -61,19 +64,24 @@ export default defineComponent({
         width: 0,
         height: 0
       },
-      node: {},
+      parseResult: {
+        data: {},
+        errors: [],
+        isValid: true,
+        fixesApplied: []
+      } as ParseResult,
       dividerPosition: 50,
       isDividerHover: false
     };
   },
   computed: {
     isValidJson() {
-      return checkValidJson(this.input as string);
+      return this.parseResult.isValid;
     }
   },
   watch: {
     input(data: string) {
-      this.node = parsePartialJson(data);
+      this.parseResult = parsePartialJson(data);
     }
   },
   methods: {
@@ -97,7 +105,7 @@ export default defineComponent({
     }
   },
   created() {
-    this.node = parsePartialJson(this.input);
+    this.parseResult = parsePartialJson(this.input);
   },
   mounted() {
     this.$nextTick(() => {

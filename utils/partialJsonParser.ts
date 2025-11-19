@@ -1,49 +1,342 @@
+export interface JsonError {
+  line: number;
+  column: number;
+  message: string;
+  type: 'syntax' | 'incomplete' | 'invalid';
+  position: number;
+}
+
+export interface ParseResult {
+  data: any;
+  errors: JsonError[];
+  isValid: boolean;
+  fixesApplied: string[];
+}
+
 /**
  * Attempts to parse JSON, even if it's incomplete or invalid.
- * Returns a parsed object/array or the original string if parsing fails completely.
+ * Returns parsed data along with error information.
  */
-export function parsePartialJson(jsonString: string): any {
+export function parsePartialJson(jsonString: string): ParseResult {
   if (!jsonString || jsonString.trim() === '') {
-    return null;
+    return {
+      data: null,
+      errors: [],
+      isValid: true,
+      fixesApplied: []
+    };
   }
 
   const trimmed = jsonString.trim();
 
   // First, try standard JSON.parse
   try {
-    return JSON.parse(trimmed);
-  } catch (error) {
-    // If standard parsing fails, try to fix common issues
-    return attemptPartialParse(trimmed);
+    const data = JSON.parse(trimmed);
+    return {
+      data,
+      errors: [],
+      isValid: true,
+      fixesApplied: []
+    };
+  } catch (error: any) {
+    // If standard parsing fails, analyze and fix the errors
+    return attemptPartialParse(trimmed, error);
   }
+}
+
+/**
+ * Get line and column from position in string
+ */
+function getLineAndColumn(str: string, position: number): { line: number; column: number } {
+  const lines = str.substring(0, position).split('\n');
+  return {
+    line: lines.length,
+    column: lines[lines.length - 1].length + 1
+  };
 }
 
 /**
  * Attempts to fix common JSON issues and parse partial JSON
  */
-function attemptPartialParse(jsonString: string): any {
+function attemptPartialParse(jsonString: string, originalError: any): ParseResult {
+  const errors: JsonError[] = [];
+  const fixesApplied: string[] = [];
   let fixedJson = jsonString;
 
+  // Parse the original error from JSON.parse
+  const originalErrorInfo = parseJsonError(originalError, jsonString);
+  if (originalErrorInfo) {
+    errors.push(originalErrorInfo);
+  }
+
   // Try various fix strategies in sequence
-  const strategies = [
-    fixTrailingCommas,
-    fixIncompleteStrings,
-    fixMissingClosingBraces,
-    fixIncompleteValues,
-    extractValidPrefix
+  const strategies: Array<{
+    name: string;
+    fix: (json: string) => string;
+    detector: (json: string) => JsonError | null;
+  }> = [
+    {
+      name: 'trailing commas',
+      fix: fixTrailingCommas,
+      detector: detectTrailingCommas
+    },
+    {
+      name: 'unclosed strings',
+      fix: fixIncompleteStrings,
+      detector: detectUnclosedStrings
+    },
+    {
+      name: 'missing closing brackets',
+      fix: fixMissingClosingBraces,
+      detector: detectMissingBrackets
+    },
+    {
+      name: 'incomplete values',
+      fix: fixIncompleteValues,
+      detector: detectIncompleteValues
+    }
   ];
 
   for (const strategy of strategies) {
-    try {
-      fixedJson = strategy(fixedJson);
-      return JSON.parse(fixedJson);
-    } catch {
-      // Continue to next strategy
+    const error = strategy.detector(fixedJson);
+    if (error) {
+      errors.push(error);
+      fixedJson = strategy.fix(fixedJson);
+      fixesApplied.push(strategy.name);
     }
   }
 
-  // If all strategies fail, return a best-effort structure
-  return createFallbackStructure(jsonString);
+  // Try to parse the fixed JSON
+  try {
+    const data = JSON.parse(fixedJson);
+    return {
+      data,
+      errors,
+      isValid: false,
+      fixesApplied
+    };
+  } catch {
+    // If still can't parse, try extracting valid prefix
+    const prefixResult = extractValidPrefix(fixedJson);
+    if (prefixResult.success) {
+      fixesApplied.push('extracted valid prefix');
+      return {
+        data: prefixResult.data,
+        errors,
+        isValid: false,
+        fixesApplied
+      };
+    }
+
+    // Last resort: create fallback structure
+    const fallbackData = createFallbackStructure(jsonString);
+    fixesApplied.push('fallback parsing');
+    return {
+      data: fallbackData,
+      errors,
+      isValid: false,
+      fixesApplied
+    };
+  }
+}
+
+/**
+ * Parse error from JSON.parse exception
+ */
+function parseJsonError(error: any, jsonString: string): JsonError | null {
+  const message = error.message || '';
+
+  // Try to extract position from error message
+  // Common formats: "at position X", "at line X column Y"
+  const positionMatch = message.match(/position (\d+)/);
+  const lineColMatch = message.match(/line (\d+) column (\d+)/);
+
+  let line = 1;
+  let column = 1;
+  let position = 0;
+
+  if (lineColMatch) {
+    line = parseInt(lineColMatch[1]);
+    column = parseInt(lineColMatch[2]);
+  } else if (positionMatch) {
+    position = parseInt(positionMatch[1]);
+    const loc = getLineAndColumn(jsonString, position);
+    line = loc.line;
+    column = loc.column;
+  } else {
+    // Try to find error position by looking at the string
+    position = jsonString.length;
+    const loc = getLineAndColumn(jsonString, position);
+    line = loc.line;
+    column = loc.column;
+  }
+
+  return {
+    line,
+    column,
+    message: error.message || 'Invalid JSON syntax',
+    type: 'syntax',
+    position
+  };
+}
+
+/**
+ * Detect trailing commas
+ */
+function detectTrailingCommas(jsonString: string): JsonError | null {
+  const trailingCommaPattern = /,(\s*[}\]])/g;
+  const match = trailingCommaPattern.exec(jsonString);
+
+  if (match && match.index !== undefined) {
+    const loc = getLineAndColumn(jsonString, match.index);
+    return {
+      line: loc.line,
+      column: loc.column,
+      message: 'Trailing comma before closing bracket',
+      type: 'syntax',
+      position: match.index
+    };
+  }
+
+  return null;
+}
+
+/**
+ * Detect unclosed strings
+ */
+function detectUnclosedStrings(jsonString: string): JsonError | null {
+  let quoteCount = 0;
+  let lastQuoteIndex = -1;
+  let escaped = false;
+
+  for (let i = 0; i < jsonString.length; i++) {
+    if (jsonString[i] === '\\' && !escaped) {
+      escaped = true;
+      continue;
+    }
+    if (jsonString[i] === '"' && !escaped) {
+      quoteCount++;
+      lastQuoteIndex = i;
+    }
+    escaped = false;
+  }
+
+  if (quoteCount % 2 === 1) {
+    const loc = getLineAndColumn(jsonString, lastQuoteIndex);
+    return {
+      line: loc.line,
+      column: loc.column,
+      message: 'Unclosed string',
+      type: 'incomplete',
+      position: lastQuoteIndex
+    };
+  }
+
+  return null;
+}
+
+/**
+ * Detect missing closing brackets/braces
+ */
+function detectMissingBrackets(jsonString: string): JsonError | null {
+  const stack: Array<{ char: string; position: number }> = [];
+  let inString = false;
+  let escaped = false;
+
+  for (let i = 0; i < jsonString.length; i++) {
+    const char = jsonString[i];
+
+    if (char === '\\' && !escaped) {
+      escaped = true;
+      continue;
+    }
+
+    if (char === '"' && !escaped) {
+      inString = !inString;
+    }
+
+    if (!inString && !escaped) {
+      if (char === '{' || char === '[') {
+        stack.push({ char, position: i });
+      } else if (char === '}') {
+        if (stack.length === 0 || stack[stack.length - 1].char !== '{') {
+          const loc = getLineAndColumn(jsonString, i);
+          return {
+            line: loc.line,
+            column: loc.column,
+            message: 'Unexpected closing brace',
+            type: 'syntax',
+            position: i
+          };
+        }
+        stack.pop();
+      } else if (char === ']') {
+        if (stack.length === 0 || stack[stack.length - 1].char !== '[') {
+          const loc = getLineAndColumn(jsonString, i);
+          return {
+            line: loc.line,
+            column: loc.column,
+            message: 'Unexpected closing bracket',
+            type: 'syntax',
+            position: i
+          };
+        }
+        stack.pop();
+      }
+    }
+
+    escaped = false;
+  }
+
+  if (stack.length > 0) {
+    const unclosed = stack[stack.length - 1];
+    const loc = getLineAndColumn(jsonString, unclosed.position);
+    const bracketName = unclosed.char === '{' ? 'brace' : 'bracket';
+    return {
+      line: loc.line,
+      column: loc.column,
+      message: `Missing closing ${bracketName}`,
+      type: 'incomplete',
+      position: unclosed.position
+    };
+  }
+
+  return null;
+}
+
+/**
+ * Detect incomplete values
+ */
+function detectIncompleteValues(jsonString: string): JsonError | null {
+  const patterns = [
+    { regex: /:\s*t$/, message: 'Incomplete boolean "true"' },
+    { regex: /:\s*tr$/, message: 'Incomplete boolean "true"' },
+    { regex: /:\s*tru$/, message: 'Incomplete boolean "true"' },
+    { regex: /:\s*f$/, message: 'Incomplete boolean "false"' },
+    { regex: /:\s*fa$/, message: 'Incomplete boolean "false"' },
+    { regex: /:\s*fal$/, message: 'Incomplete boolean "false"' },
+    { regex: /:\s*fals$/, message: 'Incomplete boolean "false"' },
+    { regex: /:\s*n$/, message: 'Incomplete null value' },
+    { regex: /:\s*nu$/, message: 'Incomplete null value' },
+    { regex: /:\s*nul$/, message: 'Incomplete null value' }
+  ];
+
+  for (const pattern of patterns) {
+    const match = pattern.regex.exec(jsonString);
+    if (match && match.index !== undefined) {
+      const position = match.index + match[0].length - 1;
+      const loc = getLineAndColumn(jsonString, position);
+      return {
+        line: loc.line,
+        column: loc.column,
+        message: pattern.message,
+        type: 'incomplete',
+        position
+      };
+    }
+  }
+
+  return null;
 }
 
 /**
@@ -51,8 +344,8 @@ function attemptPartialParse(jsonString: string): any {
  */
 function fixTrailingCommas(jsonString: string): string {
   return jsonString
-    .replace(/,(\s*[}\]])/g, '$1')  // Remove trailing commas
-    .replace(/,(\s*)$/g, '$1');     // Remove trailing comma at end
+    .replace(/,(\s*[}\]])/g, '$1')
+    .replace(/,(\s*)$/g, '$1');
 }
 
 /**
@@ -60,10 +353,7 @@ function fixTrailingCommas(jsonString: string): string {
  */
 function fixIncompleteStrings(jsonString: string): string {
   let fixed = jsonString;
-
-  // Count quotes to see if we have an unclosed string
   let quoteCount = 0;
-  let lastQuoteIndex = -1;
   let escaped = false;
 
   for (let i = 0; i < fixed.length; i++) {
@@ -73,12 +363,10 @@ function fixIncompleteStrings(jsonString: string): string {
     }
     if (fixed[i] === '"' && !escaped) {
       quoteCount++;
-      lastQuoteIndex = i;
     }
     escaped = false;
   }
 
-  // If odd number of quotes, we have an unclosed string
   if (quoteCount % 2 === 1) {
     fixed = fixed + '"';
   }
@@ -95,7 +383,6 @@ function fixMissingClosingBraces(jsonString: string): string {
   let inString = false;
   let escaped = false;
 
-  // Track opening brackets/braces
   for (let i = 0; i < fixed.length; i++) {
     const char = fixed[i];
 
@@ -118,7 +405,6 @@ function fixMissingClosingBraces(jsonString: string): string {
     escaped = false;
   }
 
-  // Add missing closing brackets/braces
   while (stack.length > 0) {
     fixed += stack.pop();
   }
@@ -130,13 +416,7 @@ function fixMissingClosingBraces(jsonString: string): string {
  * Handles incomplete values (e.g., incomplete numbers, booleans)
  */
 function fixIncompleteValues(jsonString: string): string {
-  let fixed = jsonString;
-
-  // Remove incomplete values at the end
-  // Match patterns like: "key": t (incomplete true)
-  // or "key": fal (incomplete false)
-  // or "key": nul (incomplete null)
-  fixed = fixed
+  return jsonString
     .replace(/:\s*t$/, ': true')
     .replace(/:\s*f$/, ': false')
     .replace(/:\s*fa$/, ': false')
@@ -147,26 +427,23 @@ function fixIncompleteValues(jsonString: string): string {
     .replace(/:\s*n$/, ': null')
     .replace(/:\s*nu$/, ': null')
     .replace(/:\s*nul$/, ': null');
-
-  return fixed;
 }
 
 /**
  * Tries to extract a valid JSON prefix from the string
  */
-function extractValidPrefix(jsonString: string): string {
-  // Try to find the longest valid JSON prefix
+function extractValidPrefix(jsonString: string): { success: boolean; data: any } {
   for (let i = jsonString.length; i > 0; i--) {
     const substring = jsonString.substring(0, i);
     const fixed = fixMissingClosingBraces(fixTrailingCommas(substring));
     try {
-      JSON.parse(fixed);
-      return fixed;
+      const data = JSON.parse(fixed);
+      return { success: true, data };
     } catch {
       // Continue
     }
   }
-  return jsonString;
+  return { success: false, data: null };
 }
 
 /**
@@ -175,7 +452,6 @@ function extractValidPrefix(jsonString: string): string {
 function createFallbackStructure(jsonString: string): any {
   const trimmed = jsonString.trim();
 
-  // Try to determine what type of structure was intended
   if (trimmed.startsWith('{')) {
     return tryParseAsObject(trimmed);
   } else if (trimmed.startsWith('[')) {
@@ -190,17 +466,11 @@ function createFallbackStructure(jsonString: string): any {
     return null;
   }
 
-  // Last resort: return as is
   return trimmed;
 }
 
-/**
- * Attempts to parse a partial object
- */
 function tryParseAsObject(jsonString: string): any {
   const result: any = {};
-
-  // Extract key-value pairs using regex
   const keyValuePattern = /"([^"]+)"\s*:\s*([^,}\]]+|"[^"]*"|{[^}]*}|\[[^\]]*\])/g;
   let match;
 
@@ -208,11 +478,9 @@ function tryParseAsObject(jsonString: string): any {
     const key = match[1];
     let value: any = match[2].trim();
 
-    // Try to parse the value
     try {
       value = JSON.parse(value);
     } catch {
-      // If parsing fails, try to infer the type
       if (value.startsWith('"')) {
         value = value.replace(/^"|"$/g, '');
       } else if (value === 'true') {
@@ -232,16 +500,9 @@ function tryParseAsObject(jsonString: string): any {
   return Object.keys(result).length > 0 ? result : jsonString;
 }
 
-/**
- * Attempts to parse a partial array
- */
 function tryParseAsArray(jsonString: string): any {
   const result: any[] = [];
-
-  // Remove opening bracket and try to extract values
   let content = jsonString.substring(1).trim();
-
-  // Split by commas (simple approach)
   const items = content.split(',');
 
   for (let item of items) {
@@ -251,7 +512,6 @@ function tryParseAsArray(jsonString: string): any {
     try {
       result.push(JSON.parse(item));
     } catch {
-      // Try to infer type
       if (item.startsWith('"') && item.endsWith('"')) {
         result.push(item.replace(/^"|"$/g, ''));
       } else if (item === 'true') {
@@ -271,9 +531,6 @@ function tryParseAsArray(jsonString: string): any {
   return result.length > 0 ? result : jsonString;
 }
 
-/**
- * Attempts to parse a partial string
- */
 function tryParseAsString(jsonString: string): string {
   let str = jsonString;
   if (str.startsWith('"') && !str.endsWith('"')) {
@@ -286,17 +543,11 @@ function tryParseAsString(jsonString: string): string {
   }
 }
 
-/**
- * Attempts to parse a partial number
- */
 function tryParseAsNumber(jsonString: string): number | string {
   const num = parseFloat(jsonString);
   return isNaN(num) ? jsonString : num;
 }
 
-/**
- * Attempts to parse a partial boolean
- */
 function tryParseAsBoolean(jsonString: string): boolean | string {
   if (jsonString.startsWith('t')) return true;
   if (jsonString.startsWith('f')) return false;
