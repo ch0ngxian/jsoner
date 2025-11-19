@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "@nuxtjs/composition-api";
-import type { JsonError } from "~/utils/partialJsonParser";
+import { JsonError } from "~/utils/partialJsonParser";
 
 export default defineComponent({
   props: {

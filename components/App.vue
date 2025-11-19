@@ -48,7 +48,7 @@ import { defineComponent } from "@nuxtjs/composition-api";
 import Coffee from "./Coffee.vue";
 import VNode from "./nodes/VNode.vue";
 import ErrorDisplay from "./ErrorDisplay.vue";
-import { parsePartialJson, type ParseResult } from "~/utils/partialJsonParser";
+import { parsePartialJson, ParseResult } from "~/utils/partialJsonParser";
 
 export default defineComponent({
   components: {
