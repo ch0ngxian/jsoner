@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #1e1e1e;
+}
+
+/* Input Panel Wrapper */
+.input-panel-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Divider Styles */
+.divider-outside {
+  background-color: transparent;
+  cursor: ew-resize;
+  @apply w-screen sm:w-2 h-2 sm:h-screen sm:absolute transition-all hover:bg-blue-600;
+}
+
+.divider-inside {
+  @apply w-screen sm:w-0.5 h-0.5 sm:h-screen;
+}
+
+/* Format Indicator Styles */
+.format-indicator {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background-color: rgba(68, 68, 68, 0.8);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+}
+
+.format-indicator:hover {
+  background-color: rgba(68, 68, 68, 1);
+  transform: translateY(-1px);
+}
+
+.info-icon {
+  width: 14px;
+  height: 14px;
+  color: #81a1c1;
+}
+
+.format-text {
+  font-size: 11px;
+  color: #d4d4d4;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+/* Tooltip Styles */
+.format-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  background-color: #2e3440;
+  border: 1px solid #4c566a;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  min-width: 180px;
+  z-index: 20;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tooltip-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: #88c0d0;
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+.tooltip-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #d8dee9;
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+.tooltip-bullet {
+  color: #81a1c1;
+  font-weight: bold;
+}
+
+/* Error Underline Styles */
+.error-overlay-container {
+  position: relative;
+  pointer-events: none;
+}
+
+.error-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.error-underline {
+  position: absolute;
+  height: 6px;
+  pointer-events: auto;
+  cursor: help;
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  background-size: 6px 4px;
+}
+
+.error-type-syntax {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 4' width='6' height='4'%3E%3Cpath d='M 0,2 Q 1.5,0 3,2 T 6,2' stroke='%23ef4444' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
+}
+
+.error-type-incomplete {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 4' width='6' height='4'%3E%3Cpath d='M 0,2 Q 1.5,0 3,2 T 6,2' stroke='%23f59e0b' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
+}
+
+.error-type-invalid {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 4' width='6' height='4'%3E%3Cpath d='M 0,2 Q 1.5,0 3,2 T 6,2' stroke='%23ef4444' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
+}

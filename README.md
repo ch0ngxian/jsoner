@@ -1,81 +1,89 @@
 # JSONer
-JSONer is a minimalist JSON beautifier. It helps to format the input JSON and beautify it to display in a more readable way.\
+
+JSONer is a minimalist JSON beautifier built with Next.js and React. It helps to format the input JSON and beautify it to display in a more readable way.
+
 Try it now at https://jsoner.app/
+
+## Features
+
+- ✅ JSON beautification and formatting
+- ✅ Ruby hash syntax support (hash rocket `=>` and symbol shorthand)
+- ✅ Copy formatted JSON to clipboard
+- ✅ Real-time error highlighting
+- ✅ Partial JSON parsing with intelligent error recovery
+- ✅ Dark theme optimized for readability
 
 ## Preview
 
 <img width="1437" alt="JSONer Preview" src="https://user-images.githubusercontent.com/40559684/137627912-f2cdbe4f-5c18-4856-b4ef-652ec763c417.png">
 
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **UI**: React 18
+- **Styling**: Tailwind CSS
+- **Language**: TypeScript
+- **Deployment**: Static Export
+
 ## Build Setup
 
 ```bash
 # install dependencies
-$ npm install
+npm install
 
 # serve with hot reload at localhost:3000
-$ npm run dev
+npm run dev
 
-# build for production and launch server
-$ npm run build
-$ npm run start
+# build for production
+npm run build
 
-# generate static project
-$ npm run generate
+# serve production build locally
+npm run start
 ```
 
-For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
+## Project Structure
 
-## Special Directories
+```
+jsoner/
+├── app/                    # Next.js app directory
+│   ├── layout.tsx         # Root layout with metadata
+│   ├── page.tsx           # Home page
+│   └── globals.css        # Global styles
+├── components/            # React components
+│   ├── nodes/            # JSON node rendering components
+│   ├── App.tsx           # Main application component
+│   ├── Coffee.tsx        # Buy me a coffee button
+│   ├── CopyButton.tsx    # Copy to clipboard functionality
+│   ├── ErrorUnderline.tsx # Error highlighting
+│   └── Analytics.tsx     # Google Analytics
+├── utils/                # Utility functions
+│   ├── partialJsonParser.ts  # JSON parser with error recovery
+│   └── rubyHashParser.ts     # Ruby hash to JSON converter
+└── public/               # Static assets
+```
 
-You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
+## Key Components
 
-### `assets`
+### JSON Parser
+The application uses a sophisticated partial JSON parser that can:
+- Parse incomplete JSON gracefully
+- Detect and highlight syntax errors
+- Auto-fix common issues like trailing commas
+- Convert Ruby hash syntax to JSON
 
-The assets directory contains your uncompiled assets such as Stylus or Sass files, images, or fonts.
+### Supported Formats
+- Standard JSON
+- Ruby Hash with hash rocket (`=>`)
+- Ruby Hash with symbol shorthand (`:key`)
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/assets).
+## Development
 
-### `components`
+This project was migrated from Nuxt.js 2 to Next.js 14 to take advantage of:
+- Modern React features and hooks
+- Better TypeScript support
+- Improved performance with App Router
+- Static site generation capabilities
 
-The components directory contains your Vue.js components. Components make up the different parts of your page and can be reused and imported into your pages, layouts and even other components.
+## License
 
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/components).
-
-### `layouts`
-
-Layouts are a great help when you want to change the look and feel of your Nuxt app, whether you want to include a sidebar or have distinct layouts for mobile and desktop.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/layouts).
-
-
-### `pages`
-
-This directory contains your application views and routes. Nuxt will read all the `*.vue` files inside this directory and setup Vue Router automatically.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/get-started/routing).
-
-### `plugins`
-
-The plugins directory contains JavaScript plugins that you want to run before instantiating the root Vue.js Application. This is the place to add Vue plugins and to inject functions or constants. Every time you need to use `Vue.use()`, you should create a file in `plugins/` and add its path to plugins in `nuxt.config.js`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/plugins).
-
-### `static`
-
-This directory contains your static files. Each file inside this directory is mapped to `/`.
-
-Example: `/static/robots.txt` is mapped as `/robots.txt`.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/static).
-
-### `store`
-
-This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
-
-More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
-
-
-### TODO
-Copy button
-Ruby hash support
-Python dictionary support
+MIT
