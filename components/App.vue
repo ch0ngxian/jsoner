@@ -4,14 +4,27 @@
     style="color: #d4d4d4; font-size: 0.75rem; font-weight: 300"
     @mouseup="endDragging"
   >
-    <textarea
-      class="h-2/5 sm:h-screen p-7 resize-none focus:outline-none overflow-y-scroll"
+    <div
+      class="input-panel-wrapper h-2/5 sm:h-screen relative"
       :style="{
         'background-color': '#1e1e1e',
         width: screen.width > 640 ? `${dividerPosition}%` : '100%'
       }"
-      v-model="input"
-    ></textarea>
+    >
+      <textarea
+        ref="inputTextarea"
+        class="h-full w-full p-7 resize-none focus:outline-none overflow-y-scroll"
+        style="background-color: transparent; position: relative; z-index: 1;"
+        v-model="input"
+        @scroll="handleTextareaScroll"
+      ></textarea>
+      <error-underline
+        :errors="parseResult.errors"
+        :inputText="input"
+        :scrollTop="textareaScrollTop"
+        style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 2; pointer-events: none;"
+      ></error-underline>
+    </div>
     <div
       class="divider-outside flex justify-center"
       :style="{
@@ -48,6 +61,7 @@ import { defineComponent } from "@nuxtjs/composition-api";
 import Coffee from "./Coffee.vue";
 import VNode from "./nodes/VNode.vue";
 import ErrorDisplay from "./ErrorDisplay.vue";
+import ErrorUnderline from "./ErrorUnderline.vue";
 import { parsePartialJson, ParseResult } from "~/utils/partialJsonParser";
 
 interface ComponentData {
@@ -59,13 +73,15 @@ interface ComponentData {
   parseResult: ParseResult;
   dividerPosition: number;
   isDividerHover: boolean;
+  textareaScrollTop: number;
 }
 
 export default defineComponent({
   components: {
     VNode,
     Coffee,
-    ErrorDisplay
+    ErrorDisplay,
+    ErrorUnderline
   },
   data(): ComponentData {
     return {
@@ -82,7 +98,8 @@ export default defineComponent({
         fixesApplied: []
       },
       dividerPosition: 50,
-      isDividerHover: false
+      isDividerHover: false,
+      textareaScrollTop: 0
     };
   },
   computed: {
@@ -113,6 +130,10 @@ export default defineComponent({
     onResize() {
       this.screen.height = window.innerHeight;
       this.screen.width = window.innerWidth;
+    },
+    handleTextareaScroll(event: Event) {
+      const target = event.target as HTMLTextAreaElement;
+      this.textareaScrollTop = -target.scrollTop;
     }
   },
   created() {
@@ -130,6 +151,11 @@ export default defineComponent({
 </script>
 
 <style>
+.input-panel-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
 .divider-outside {
   background-color: transparent;
   cursor: ew-resize;
