@@ -43,11 +43,15 @@
     </div>
 
     <div
-      class="w-full sm:h-screen p-7 overflow-y-scroll flex-grow break-words"
+      class="w-full sm:h-screen p-7 overflow-y-scroll flex-grow break-words relative"
       :style="{
         width: screen.width > 640 ? `${100 - dividerPosition}%` : '100%'
       }"
     >
+      <copy-button
+        :jsonData="parseResult.data"
+        class="absolute top-2 right-2"
+      />
       <v-node :node="parseResult.data" :showEndComma="false"></v-node>
     </div>
 
@@ -60,6 +64,7 @@ import { defineComponent } from "@nuxtjs/composition-api";
 import Coffee from "./Coffee.vue";
 import VNode from "./nodes/VNode.vue";
 import ErrorUnderline from "./ErrorUnderline.vue";
+import CopyButton from "./CopyButton.vue";
 import { parsePartialJson, ParseResult } from "~/utils/partialJsonParser";
 
 interface ComponentData {
@@ -78,7 +83,8 @@ export default defineComponent({
   components: {
     VNode,
     Coffee,
-    ErrorUnderline
+    ErrorUnderline,
+    CopyButton
   },
   data(): ComponentData {
     return {
