@@ -48,7 +48,6 @@
         width: screen.width > 640 ? `${100 - dividerPosition}%` : '100%'
       }"
     >
-      <error-display :errors="parseResult.errors" :fixesApplied="parseResult.fixesApplied"></error-display>
       <v-node :node="parseResult.data" :showEndComma="false"></v-node>
     </div>
 
@@ -60,7 +59,6 @@
 import { defineComponent } from "@nuxtjs/composition-api";
 import Coffee from "./Coffee.vue";
 import VNode from "./nodes/VNode.vue";
-import ErrorDisplay from "./ErrorDisplay.vue";
 import ErrorUnderline from "./ErrorUnderline.vue";
 import { parsePartialJson, ParseResult } from "~/utils/partialJsonParser";
 
@@ -80,7 +78,6 @@ export default defineComponent({
   components: {
     VNode,
     Coffee,
-    ErrorDisplay,
     ErrorUnderline
   },
   data(): ComponentData {

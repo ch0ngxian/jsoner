@@ -95,47 +95,23 @@ export default defineComponent({
 
 .error-underline {
   position: absolute;
-  height: 3px;
+  height: 6px;
   pointer-events: auto;
   cursor: help;
-  background-image: repeating-linear-gradient(
-    135deg,
-    transparent,
-    transparent 2px,
-    currentColor 2px,
-    currentColor 4px
-  );
-  background-size: 6px 3px;
   background-repeat: repeat-x;
-  background-position: bottom;
+  background-position: left bottom;
+  background-size: 6px 4px;
 }
 
 .error-type-syntax {
-  color: #ef4444;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 4' width='6' height='4'%3E%3Cpath d='M 0,2 Q 1.5,0 3,2 T 6,2' stroke='%23ef4444' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
 }
 
 .error-type-incomplete {
-  color: #f59e0b;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 4' width='6' height='4'%3E%3Cpath d='M 0,2 Q 1.5,0 3,2 T 6,2' stroke='%23f59e0b' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
 }
 
 .error-type-invalid {
-  color: #ef4444;
-}
-
-/* Wavy underline using SVG pattern */
-.error-underline::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 3px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 3' enable-background='new 0 0 6 3' height='3' width='6'%3E%3Cg fill='%23ef4444'%3E%3Cpolygon points='5.5,0 2.5,3 1.1,3 4.1,0'/%3E%3Cpolygon points='4,0 6,2 6,2.6 5.4,3 0,3 2,1'/%3E%3C/g%3E%3C/svg%3E");
-  background-repeat: repeat-x;
-  background-size: 6px 3px;
-}
-
-.error-type-incomplete .error-underline::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 3' enable-background='new 0 0 6 3' height='3' width='6'%3E%3Cg fill='%23f59e0b'%3E%3Cpolygon points='5.5,0 2.5,3 1.1,3 4.1,0'/%3E%3Cpolygon points='4,0 6,2 6,2.6 5.4,3 0,3 2,1'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 4' width='6' height='4'%3E%3Cpath d='M 0,2 Q 1.5,0 3,2 T 6,2' stroke='%23ef4444' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
 }
 </style>
