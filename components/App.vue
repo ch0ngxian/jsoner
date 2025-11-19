@@ -50,13 +50,24 @@ import VNode from "./nodes/VNode.vue";
 import ErrorDisplay from "./ErrorDisplay.vue";
 import { parsePartialJson, ParseResult } from "~/utils/partialJsonParser";
 
+interface ComponentData {
+  input: string;
+  screen: {
+    width: number;
+    height: number;
+  };
+  parseResult: ParseResult;
+  dividerPosition: number;
+  isDividerHover: boolean;
+}
+
 export default defineComponent({
   components: {
     VNode,
     Coffee,
     ErrorDisplay
   },
-  data() {
+  data(): ComponentData {
     return {
       input:
         '{"str":"a", "obj":{"a": "1"}, "arr":[1,2,4], "bool": true, "empty": null}',
@@ -69,13 +80,13 @@ export default defineComponent({
         errors: [],
         isValid: true,
         fixesApplied: []
-      } as ParseResult,
+      },
       dividerPosition: 50,
       isDividerHover: false
     };
   },
   computed: {
-    isValidJson() {
+    isValidJson(): boolean {
       return this.parseResult.isValid;
     }
   },
