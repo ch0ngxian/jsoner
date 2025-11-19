@@ -1,4 +1,9 @@
 import { isRubyHash, parseRubyHashAdvanced } from './rubyHashParser';
+import { isJavaScriptObject, javascriptObjectToJson } from './javascriptObjectParser';
+import { isPythonDict, pythonDictToJson } from './pythonDictParser';
+import { isPHPArray, phpArrayToJson } from './phpArrayParser';
+import { isJavaMap, javaMapToJson } from './javaMapParser';
+import { isCSharpDict, csharpDictToJson } from './csharpDictParser';
 
 export interface JsonError {
   line: number;
@@ -41,6 +46,103 @@ export function parsePartialJson(jsonString: string): ParseResult {
       fixesApplied: []
     };
   } catch (error: any) {
+    // Check for various language-specific formats
+
+    // Check for JavaScript/TypeScript object
+    if (isJavaScriptObject(trimmed)) {
+      try {
+        const converted = javascriptObjectToJson(trimmed);
+        const data = JSON.parse(converted);
+        return {
+          data,
+          errors: [],
+          isValid: true,
+          fixesApplied: ['Converted from JavaScript/TypeScript object syntax']
+        };
+      } catch (parseError: any) {
+        const converted = javascriptObjectToJson(trimmed);
+        const partialResult = attemptPartialParse(converted, parseError);
+        partialResult.fixesApplied.unshift('Converted from JavaScript/TypeScript object syntax');
+        return partialResult;
+      }
+    }
+
+    // Check for Python dict
+    if (isPythonDict(trimmed)) {
+      try {
+        const converted = pythonDictToJson(trimmed);
+        const data = JSON.parse(converted);
+        return {
+          data,
+          errors: [],
+          isValid: true,
+          fixesApplied: ['Converted from Python dict syntax']
+        };
+      } catch (parseError: any) {
+        const converted = pythonDictToJson(trimmed);
+        const partialResult = attemptPartialParse(converted, parseError);
+        partialResult.fixesApplied.unshift('Converted from Python dict syntax');
+        return partialResult;
+      }
+    }
+
+    // Check for PHP array
+    if (isPHPArray(trimmed)) {
+      try {
+        const converted = phpArrayToJson(trimmed);
+        const data = JSON.parse(converted);
+        return {
+          data,
+          errors: [],
+          isValid: true,
+          fixesApplied: ['Converted from PHP array syntax']
+        };
+      } catch (parseError: any) {
+        const converted = phpArrayToJson(trimmed);
+        const partialResult = attemptPartialParse(converted, parseError);
+        partialResult.fixesApplied.unshift('Converted from PHP array syntax');
+        return partialResult;
+      }
+    }
+
+    // Check for Java Map
+    if (isJavaMap(trimmed)) {
+      try {
+        const converted = javaMapToJson(trimmed);
+        const data = JSON.parse(converted);
+        return {
+          data,
+          errors: [],
+          isValid: true,
+          fixesApplied: ['Converted from Java Map syntax']
+        };
+      } catch (parseError: any) {
+        const converted = javaMapToJson(trimmed);
+        const partialResult = attemptPartialParse(converted, parseError);
+        partialResult.fixesApplied.unshift('Converted from Java Map syntax');
+        return partialResult;
+      }
+    }
+
+    // Check for C# Dictionary
+    if (isCSharpDict(trimmed)) {
+      try {
+        const converted = csharpDictToJson(trimmed);
+        const data = JSON.parse(converted);
+        return {
+          data,
+          errors: [],
+          isValid: true,
+          fixesApplied: ['Converted from C# Dictionary syntax']
+        };
+      } catch (parseError: any) {
+        const converted = csharpDictToJson(trimmed);
+        const partialResult = attemptPartialParse(converted, parseError);
+        partialResult.fixesApplied.unshift('Converted from C# Dictionary syntax');
+        return partialResult;
+      }
+    }
+
     // Check if this might be a Ruby hash
     if (isRubyHash(trimmed)) {
       const rubyResult = parseRubyHashAdvanced(trimmed);
