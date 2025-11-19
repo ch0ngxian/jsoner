@@ -23,24 +23,14 @@ export default function CopyButton({ jsonData, className = '' }: CopyButtonProps
     }
   }
 
-  const buttonStyle = copied
-    ? {
-        backgroundColor: '#2d5a2d',
-        color: '#afcfa4',
-        border: '1px solid #afcfa4',
-      }
-    : {
-        backgroundColor: '#2d2d2d',
-        color: '#d4d4d4',
-        border: '1px solid #555',
-        cursor: 'pointer',
-      }
-
   return (
     <button
       onClick={copyToClipboard}
-      className={`px-3 py-1.5 rounded transition-all duration-200 font-mono text-sm hover:!bg-[#3d3d3d] ${className}`}
-      style={buttonStyle}
+      className={`rounded-lg border p-1.5 transition-all duration-500 ease text-sm ${
+        copied
+          ? 'border-green-400 bg-green-900 text-green-200'
+          : 'border-gray-600 bg-transparent text-gray-300 hover:bg-gray-800'
+      } ${className}`}
       title="Copy formatted JSON"
     >
       {copied ? 'Copied!' : 'Copy JSON'}
