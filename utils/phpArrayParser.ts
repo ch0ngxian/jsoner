@@ -33,6 +33,9 @@ export function phpArrayToJson(input: string): string {
 
   let result = input;
 
+  // Check if this is an associative array (contains =>)
+  const isAssociative = /\s*=>\s*/.test(result);
+
   // Remove single-line comments
   result = result.replace(/\/\/.*$/gm, '');
 
@@ -58,6 +61,11 @@ export function phpArrayToJson(input: string): string {
 
   // Convert single quotes to double quotes for strings
   result = convertSingleQuotesToDouble(result);
+
+  // If this is an associative array, convert outer [] to {}
+  if (isAssociative) {
+    result = convertAssociativeArrayBrackets(result);
+  }
 
   return result.trim();
 }
@@ -98,6 +106,65 @@ function convertArraySyntax(input: string): string {
   }
 
   return output;
+}
+
+/**
+ * Convert square brackets to curly braces for all associative arrays (including nested)
+ * This handles the case where PHP uses [ "key" => value ] which should become { "key": value }
+ */
+function convertAssociativeArrayBrackets(input: string): string {
+  let result = '';
+  let depth = 0;
+  let inString = false;
+  let stringChar: string | null = null;
+  let escaped = false;
+  let currentSegment = '';
+  const bracketStack: number[] = [];
+
+  for (let i = 0; i < input.length; i++) {
+    const char = input[i];
+
+    // Handle escape sequences
+    if (char === '\\' && !escaped) {
+      escaped = true;
+      currentSegment += char;
+      continue;
+    }
+
+    // Handle string delimiters
+    if ((char === '"' || char === "'") && !escaped) {
+      if (!inString) {
+        inString = true;
+        stringChar = char;
+      } else if (char === stringChar) {
+        inString = false;
+        stringChar = null;
+      }
+      currentSegment += char;
+      escaped = false;
+      continue;
+    }
+
+    if (!inString && !escaped) {
+      if (char === '[') {
+        bracketStack.push(depth);
+        depth++;
+        currentSegment += '{'; // Convert [ to {
+      } else if (char === ']') {
+        depth--;
+        bracketStack.pop();
+        currentSegment += '}'; // Convert ] to }
+      } else {
+        currentSegment += char;
+      }
+    } else {
+      currentSegment += char;
+    }
+
+    escaped = false;
+  }
+
+  return currentSegment;
 }
 
 /**
