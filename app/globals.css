@@ -36,16 +36,16 @@ body {
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
-  background-color: rgba(68, 68, 68, 0.8);
-  border-radius: 6px;
+  background-color: transparent;
+  border: 1px solid #4b5563;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.5s ease;
   pointer-events: auto;
 }
 
 .format-indicator:hover {
-  background-color: rgba(68, 68, 68, 1);
-  transform: translateY(-1px);
+  background-color: rgba(31, 41, 55, 0.5);
 }
 
 .info-icon {
@@ -68,9 +68,9 @@ body {
   left: 0;
   margin-bottom: 8px;
   padding: 10px 12px;
-  background-color: #2e3440;
-  border: 1px solid #4c566a;
-  border-radius: 6px;
+  background-color: transparent;
+  border: 1px solid #4b5563;
+  border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   min-width: 180px;
   z-index: 20;
