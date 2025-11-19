@@ -64,12 +64,17 @@ typings/
 
 # next.js build output
 .next
+out
 
 # nuxt.js build output
 .nuxt
 
 # Nuxt generate
 dist
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
 
 # vuepress build output
 .vuepress/dist
