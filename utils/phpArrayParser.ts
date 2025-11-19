@@ -22,6 +22,7 @@ export function isPHPArray(input: string): boolean {
     /\$\w+\s*=/, // Variable assignment with $
     /\b(TRUE|FALSE|NULL)\b/i, // PHP keywords (case-insensitive)
     /\/\/.*$|\/\*[\s\S]*?\*\//m, // PHP comments
+    /\[\s*["']\w+["']\s*=>/m, // Array literal with arrow syntax ["key" =>
   ];
 
   return patterns.some(pattern => pattern.test(trimmed));
