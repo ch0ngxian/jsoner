@@ -204,7 +204,7 @@ export default defineComponent({
 /* Format Indicator Styles */
 .format-indicator {
   position: absolute;
-  top: 12px;
+  bottom: 12px;
   left: 12px;
   z-index: 10;
   display: flex;
@@ -239,9 +239,9 @@ export default defineComponent({
 /* Tooltip Styles */
 .format-tooltip {
   position: absolute;
-  top: 100%;
+  bottom: 100%;
   left: 0;
-  margin-top: 8px;
+  margin-bottom: 8px;
   padding: 10px 12px;
   background-color: #2e3440;
   border: 1px solid #4c566a;
@@ -255,7 +255,7 @@ export default defineComponent({
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-5px);
+    transform: translateY(5px);
   }
   to {
     opacity: 1;
