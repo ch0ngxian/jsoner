@@ -35,10 +35,7 @@
         width: screen.width > 640 ? `${100 - dividerPosition}%` : '100%'
       }"
     >
-      <v-node v-if="isValidJson" :node="node" :showEndComma="false"></v-node>
-      <p v-else>
-        {{ input }}
-      </p>
+      <v-node :node="node" :showEndComma="false"></v-node>
     </div>
 
     <coffee class="fixed bottom-0 right-0" />
@@ -49,6 +46,7 @@
 import { defineComponent } from "@nuxtjs/composition-api";
 import Coffee from "./Coffee.vue";
 import VNode from "./nodes/VNode.vue";
+import { parsePartialJson, isValidJson as checkValidJson } from "~/utils/partialJsonParser";
 
 export default defineComponent({
   components: {
@@ -70,19 +68,12 @@ export default defineComponent({
   },
   computed: {
     isValidJson() {
-      try {
-        JSON.parse(this.input as string);
-        return true;
-      } catch {}
-
-      return false;
+      return checkValidJson(this.input as string);
     }
   },
   watch: {
     input(data: string) {
-      try {
-        this.node = JSON.parse(data);
-      } catch {}
+      this.node = parsePartialJson(data);
     }
   },
   methods: {
@@ -106,7 +97,7 @@ export default defineComponent({
     }
   },
   created() {
-    this.node = JSON.parse(this.input);
+    this.node = parsePartialJson(this.input);
   },
   mounted() {
     this.$nextTick(() => {
