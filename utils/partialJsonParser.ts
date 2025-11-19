@@ -1,3 +1,5 @@
+import { isRubyHash, parseRubyHashAdvanced } from './rubyHashParser';
+
 export interface JsonError {
   line: number;
   column: number;
@@ -39,6 +41,43 @@ export function parsePartialJson(jsonString: string): ParseResult {
       fixesApplied: []
     };
   } catch (error: any) {
+    // Check if this might be a Ruby hash
+    if (isRubyHash(trimmed)) {
+      const rubyResult = parseRubyHashAdvanced(trimmed);
+
+      if (rubyResult.isRubyHash && rubyResult.errors.length === 0) {
+        try {
+          const data = JSON.parse(rubyResult.json);
+          return {
+            data,
+            errors: [],
+            isValid: true,
+            fixesApplied: ['Converted from Ruby hash syntax']
+          };
+        } catch (parseError: any) {
+          // If converted JSON still fails to parse, try partial parse on it
+          const partialResult = attemptPartialParse(rubyResult.json, parseError);
+          partialResult.fixesApplied.unshift('Converted from Ruby hash syntax');
+          return partialResult;
+        }
+      } else if (rubyResult.errors.length > 0) {
+        // Ruby conversion had errors, add them to the result
+        const errors: JsonError[] = rubyResult.errors.map((msg, idx) => ({
+          line: 1,
+          column: 1,
+          message: msg,
+          type: 'syntax' as const,
+          position: 0
+        }));
+        return {
+          data: null,
+          errors,
+          isValid: false,
+          fixesApplied: []
+        };
+      }
+    }
+
     // If standard parsing fails, analyze and fix the errors
     return attemptPartialParse(trimmed, error);
   }
