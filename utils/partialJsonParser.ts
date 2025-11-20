@@ -2,7 +2,6 @@ import { isRubyHash, parseRubyHashAdvanced } from './rubyHashParser';
 import { isJavaScriptObject, javascriptObjectToJson } from './javascriptObjectParser';
 import { isPythonDict, pythonDictToJson } from './pythonDictParser';
 import { isPHPArray, phpArrayToJson } from './phpArrayParser';
-import { isJavaMap, javaMapToJson } from './javaMapParser';
 import { isCSharpDict, csharpDictToJson } from './csharpDictParser';
 
 export interface JsonError {
@@ -101,25 +100,6 @@ export function parsePartialJson(jsonString: string): ParseResult {
         const converted = phpArrayToJson(trimmed);
         const partialResult = attemptPartialParse(converted, parseError);
         partialResult.fixesApplied.unshift('Converted from PHP array syntax');
-        return partialResult;
-      }
-    }
-
-    // Check for Java Map
-    if (isJavaMap(trimmed)) {
-      try {
-        const converted = javaMapToJson(trimmed);
-        const data = JSON.parse(converted);
-        return {
-          data,
-          errors: [],
-          isValid: true,
-          fixesApplied: ['Converted from Java Map syntax']
-        };
-      } catch (parseError: any) {
-        const converted = javaMapToJson(trimmed);
-        const partialResult = attemptPartialParse(converted, parseError);
-        partialResult.fixesApplied.unshift('Converted from Java Map syntax');
         return partialResult;
       }
     }

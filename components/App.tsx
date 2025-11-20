@@ -154,10 +154,6 @@ export default function App() {
               </div>
               <div className="tooltip-item">
                 <span className="tooltip-bullet">•</span>
-                <span>Java Map/HashMap</span>
-              </div>
-              <div className="tooltip-item">
-                <span className="tooltip-bullet">•</span>
                 <span>C# Dictionary</span>
               </div>
             </div>
