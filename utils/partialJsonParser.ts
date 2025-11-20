@@ -2,7 +2,6 @@ import { isRubyHash, parseRubyHashAdvanced } from './rubyHashParser';
 import { isJavaScriptObject, javascriptObjectToJson } from './javascriptObjectParser';
 import { isPythonDict, pythonDictToJson } from './pythonDictParser';
 import { isPHPArray, phpArrayToJson } from './phpArrayParser';
-import { isCSharpDict, csharpDictToJson } from './csharpDictParser';
 
 export interface JsonError {
   line: number;
@@ -100,25 +99,6 @@ export function parsePartialJson(jsonString: string): ParseResult {
         const converted = phpArrayToJson(trimmed);
         const partialResult = attemptPartialParse(converted, parseError);
         partialResult.fixesApplied.unshift('Converted from PHP array syntax');
-        return partialResult;
-      }
-    }
-
-    // Check for C# Dictionary
-    if (isCSharpDict(trimmed)) {
-      try {
-        const converted = csharpDictToJson(trimmed);
-        const data = JSON.parse(converted);
-        return {
-          data,
-          errors: [],
-          isValid: true,
-          fixesApplied: ['Converted from C# Dictionary syntax']
-        };
-      } catch (parseError: any) {
-        const converted = csharpDictToJson(trimmed);
-        const partialResult = attemptPartialParse(converted, parseError);
-        partialResult.fixesApplied.unshift('Converted from C# Dictionary syntax');
         return partialResult;
       }
     }

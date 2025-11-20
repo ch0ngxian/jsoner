@@ -152,10 +152,6 @@ export default function App() {
                 <span className="tooltip-bullet">•</span>
                 <span>PHP Array</span>
               </div>
-              <div className="tooltip-item">
-                <span className="tooltip-bullet">•</span>
-                <span>C# Dictionary</span>
-              </div>
             </div>
           )}
         </div>
