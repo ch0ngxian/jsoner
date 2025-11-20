@@ -138,7 +138,19 @@ export default function App() {
               </div>
               <div className="tooltip-item">
                 <span className="tooltip-bullet">•</span>
+                <span>JavaScript/TypeScript Object</span>
+              </div>
+              <div className="tooltip-item">
+                <span className="tooltip-bullet">•</span>
+                <span>Python Dict</span>
+              </div>
+              <div className="tooltip-item">
+                <span className="tooltip-bullet">•</span>
                 <span>Ruby Hash ({'=>'}, :key)</span>
+              </div>
+              <div className="tooltip-item">
+                <span className="tooltip-bullet">•</span>
+                <span>PHP Array</span>
               </div>
             </div>
           )}
