@@ -3,5 +3,5 @@ interface FieldProps {
 }
 
 export default function Field({ field }: FieldProps) {
-  return <p style={{ color: '#88deff' }}>&quot;{field}&quot;</p>
+  return <p style={{ color: 'var(--json-key)' }}>&quot;{field}&quot;</p>
 }

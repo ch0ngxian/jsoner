@@ -15,8 +15,8 @@ export default function VNull({ field, showEndComma = true }: VNullProps) {
           <p className="pr-1">:</p>
         </>
       )}
-      <p style={{ color: '#369eda' }}>
-        null{showEndComma && <span style={{ color: '#d4d4d4' }}>,</span>}
+      <p style={{ color: 'var(--json-null)' }}>
+        null{showEndComma && <span style={{ color: 'var(--json-punctuation)' }}>,</span>}
       </p>
     </div>
   )

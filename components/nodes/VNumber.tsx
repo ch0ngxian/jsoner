@@ -15,8 +15,8 @@ export default function VNumber({ field, value, showEndComma = true }: VNumberPr
           <p className="pr-1">:</p>
         </>
       )}
-      <p style={{ color: '#afcfa4' }}>
-        {value}{showEndComma && <span style={{ color: '#d4d4d4' }}>,</span>}
+      <p style={{ color: 'var(--json-number)' }}>
+        {value}{showEndComma && <span style={{ color: 'var(--json-punctuation)' }}>,</span>}
       </p>
     </div>
   )

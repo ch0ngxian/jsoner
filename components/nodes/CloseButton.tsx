@@ -5,7 +5,7 @@ interface CloseButtonProps {
 export default function CloseButton({ onClick }: CloseButtonProps) {
   return (
     <button
-      className="ml-2 flex rounded border border-gray-600 text-gray-600 h-4 w-4 items-center justify-center text-xs hover:bg-gray-700 hover:border-gray-400 hover:text-gray-400"
+      className="ml-2 flex rounded h-4 w-4 items-center justify-center text-xs collapse-btn"
       onClick={onClick}
     >
       <span>-</span>

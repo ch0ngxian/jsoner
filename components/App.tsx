@@ -5,6 +5,7 @@ import Coffee from './Coffee'
 import VNode from './nodes/VNode'
 import ErrorUnderline from './ErrorUnderline'
 import CopyButton from './CopyButton'
+import ThemeToggle from './ThemeToggle'
 import { parsePartialJson, ParseResult } from '@/utils/partialJsonParser'
 
 interface ComponentData {
@@ -96,13 +97,14 @@ export default function App() {
   return (
     <div
       className="h-screen w-screen flex justify-center flex-col sm:flex-row"
-      style={{ color: '#d4d4d4', fontSize: '0.75rem', fontWeight: 300 }}
+      style={{ color: 'var(--text-primary)', fontSize: '0.75rem', fontWeight: 300 }}
       onMouseUp={endDragging}
     >
+      <ThemeToggle />
       <div
         className="input-panel-wrapper h-2/5 sm:h-screen relative"
         style={{
-          backgroundColor: '#1e1e1e',
+          backgroundColor: 'var(--bg-primary)',
           width: screen.width > 640 ? `${dividerPosition}%` : '100%',
         }}
       >
@@ -158,8 +160,8 @@ export default function App() {
 
         <textarea
           ref={inputTextareaRef}
-          className="h-full w-full p-7 resize-none focus:outline-none overflow-y-scroll"
-          style={{ backgroundColor: 'transparent', position: 'relative', zIndex: 1 }}
+          className="h-full w-full p-7 resize-none focus:outline-none overflow-y-scroll json-textarea"
+          style={{ position: 'relative', zIndex: 1 }}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onScroll={handleTextareaScroll}
@@ -191,7 +193,7 @@ export default function App() {
         <div
           className="divider-inside"
           style={{
-            backgroundColor: isDividerHover ? 'transparent' : '#444444',
+            backgroundColor: isDividerHover ? 'transparent' : undefined,
           }}
         />
       </div>

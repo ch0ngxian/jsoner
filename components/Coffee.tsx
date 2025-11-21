@@ -18,7 +18,7 @@ export default function Coffee() {
       onClick={buyMeCoffee}
     >
       <div
-        className={`rounded-lg border border-gray-600 p-1.5 m-3 flex justify-end items-center transition-all duration-500 ease ${
+        className={`rounded-lg p-1.5 m-3 flex justify-end items-center btn-secondary ${
           isShow ? 'w-52' : ''
         }`}
       >

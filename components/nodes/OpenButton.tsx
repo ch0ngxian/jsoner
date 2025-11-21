@@ -5,9 +5,9 @@ interface OpenButtonProps {
 
 export default function OpenButton({ count, onClick }: OpenButtonProps) {
   return (
-    <button className="mx-1 px-1 hover:bg-gray-700 rounded" onClick={onClick}>
+    <button className="mx-1 px-1 hover:bg-[var(--button-hover-bg)] rounded" onClick={onClick}>
       {count != null ? (
-        <div className="px-1 rounded" style={{ color: '#d98e73' }}>
+        <div className="px-1 rounded" style={{ color: 'var(--json-string)' }}>
           {count}
         </div>
       ) : (

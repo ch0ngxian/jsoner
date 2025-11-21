@@ -26,10 +26,10 @@ export default function CopyButton({ jsonData, className = '' }: CopyButtonProps
   return (
     <button
       onClick={copyToClipboard}
-      className={`rounded-lg border p-1.5 transition-all duration-500 ease text-sm ${
+      className={`rounded-lg p-1.5 text-sm ${
         copied
-          ? 'border-green-400 bg-green-900 text-green-200'
-          : 'border-gray-600 bg-transparent text-gray-300 hover:bg-gray-800'
+          ? 'copy-btn-success'
+          : 'copy-btn'
       } ${className}`}
       title="Copy formatted JSON"
     >

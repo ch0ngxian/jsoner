@@ -2,11 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Theme CSS Variables */
+:root {
+  /* Default to dark theme */
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #1e1e1e;
+  --text-primary: #d4d4d4;
+  --text-secondary: #d8dee9;
+
+  /* JSON Syntax Colors - Dark Theme */
+  --json-key: #88deff;
+  --json-string: #d98e73;
+  --json-number: #afcfa4;
+  --json-boolean: #369eda;
+  --json-null: #369eda;
+  --json-punctuation: #d4d4d4;
+
+  /* UI Colors */
+  --border-color: #4b5563;
+  --divider-color: #444444;
+  --info-color: #81a1c1;
+  --tooltip-title: #88c0d0;
+  --tooltip-text: #d8dee9;
+
+  /* Interactive Colors */
+  --hover-bg: rgba(31, 41, 55, 0.5);
+  --button-hover-bg: #374151;
+}
+
+/* Light Theme */
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f9fa;
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+
+  /* JSON Syntax Colors - Light Theme (optimized for readability) */
+  --json-key: #0550ae;
+  --json-string: #a31515;
+  --json-number: #098658;
+  --json-boolean: #0000ff;
+  --json-null: #0000ff;
+  --json-punctuation: #1f2937;
+
+  /* UI Colors */
+  --border-color: #d1d5db;
+  --divider-color: #e5e7eb;
+  --info-color: #3b82f6;
+  --tooltip-title: #1d4ed8;
+  --tooltip-text: #374151;
+
+  /* Interactive Colors */
+  --hover-bg: rgba(243, 244, 246, 0.8);
+  --button-hover-bg: #e5e7eb;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
-  background-color: #1e1e1e;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Input Panel Wrapper */
@@ -24,6 +81,7 @@ body {
 
 .divider-inside {
   @apply w-screen sm:w-0.5 h-0.5 sm:h-screen;
+  background-color: var(--divider-color);
 }
 
 /* Format Indicator Styles */
@@ -37,7 +95,7 @@ body {
   gap: 6px;
   padding: 6px 10px;
   background-color: transparent;
-  border: 1px solid #4b5563;
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.5s ease;
@@ -45,18 +103,18 @@ body {
 }
 
 .format-indicator:hover {
-  background-color: rgba(31, 41, 55, 0.5);
+  background-color: var(--hover-bg);
 }
 
 .info-icon {
   width: 14px;
   height: 14px;
-  color: #81a1c1;
+  color: var(--info-color);
 }
 
 .format-text {
   font-size: 11px;
-  color: #d4d4d4;
+  color: var(--text-primary);
   font-weight: 400;
   letter-spacing: 0.3px;
 }
@@ -68,10 +126,10 @@ body {
   left: 0;
   margin-bottom: 8px;
   padding: 10px 12px;
-  background-color: transparent;
-  border: 1px solid #4b5563;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   min-width: 180px;
   z-index: 20;
   animation: fadeIn 0.2s ease;
@@ -91,7 +149,7 @@ body {
 .tooltip-title {
   font-size: 11px;
   font-weight: 600;
-  color: #88c0d0;
+  color: var(--tooltip-title);
   margin-bottom: 6px;
   letter-spacing: 0.5px;
 }
@@ -101,13 +159,13 @@ body {
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  color: #d8dee9;
+  color: var(--tooltip-text);
   margin: 4px 0;
   line-height: 1.4;
 }
 
 .tooltip-bullet {
-  color: #81a1c1;
+  color: var(--info-color);
   font-weight: bold;
 }
 
@@ -146,4 +204,92 @@ body {
 
 .error-type-invalid {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 6 4' width='6' height='4'%3E%3Cpath d='M 0,2 Q 1.5,0 3,2 T 6,2' stroke='%23ef4444' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text-primary);
+}
+
+.theme-toggle:hover {
+  background-color: var(--hover-bg);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Textarea styling */
+.json-textarea {
+  background-color: transparent;
+  color: var(--text-primary);
+  caret-color: var(--text-primary);
+}
+
+.json-textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+/* Button styling for theme support */
+.btn-secondary {
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--hover-bg);
+}
+
+/* Close/collapse button */
+.collapse-btn {
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.collapse-btn:hover {
+  background-color: var(--hover-bg);
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+/* Copy button states */
+.copy-btn {
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+}
+
+.copy-btn:hover {
+  background-color: var(--hover-bg);
+}
+
+.copy-btn-success {
+  border-color: #22c55e;
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+}
+
+[data-theme="light"] .copy-btn-success {
+  background-color: rgba(34, 197, 94, 0.1);
 }

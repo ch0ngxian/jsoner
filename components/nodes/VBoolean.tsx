@@ -15,8 +15,8 @@ export default function VBoolean({ field, value, showEndComma = true }: VBoolean
           <p className="pr-1">:</p>
         </>
       )}
-      <p style={{ color: '#369eda' }}>
-        {String(value)}{showEndComma && <span style={{ color: '#d4d4d4' }}>,</span>}
+      <p style={{ color: 'var(--json-boolean)' }}>
+        {String(value)}{showEndComma && <span style={{ color: 'var(--json-punctuation)' }}>,</span>}
       </p>
     </div>
   )
